@@ -387,3 +387,9 @@ A log of every prompt given to the AI assistant, grouped by part. For each promp
 > [Image: folder tree for hw5/ showing AI_prompts.md, requirements.txt, .env.example, .gitignore, .mcp.json, README.md, data/, mcp_server/, frontend/, backend/ (main.py, models.py, prompts/), and output/ (harness.md, mcp_smoke.json, desk_tickets.html, design.md, resolved_tickets.json, resolved_board.html, audit_trail.json, github_url.txt)]
 
 **Missing from the first prompt:** It didn't give the repo layout, so this asks for an `hw5/` folder matching a given tree, with `.env.example` instead of `.env`, an `output/github_url.txt` to fill in after pushing, and a check for missing files.
+
+### Prompt 5
+
+> ok push hw5 folder to github repo and it should be public so that graders can easily clone it.
+
+**Missing from the first prompt:** It didn't give the go-ahead or visibility, so this asks to push the `hw5` folder to a public GitHub repo that graders can clone, and to record its URL.
