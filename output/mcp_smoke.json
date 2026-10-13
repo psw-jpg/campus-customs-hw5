@@ -1,0 +1,238 @@
+{
+  "run_at": "2026-10-12T21:39:58",
+  "server": "campus-customs",
+  "connection": "MCP over stdio, launched from .mcp.json",
+  "database": "a temporary copy of data/campus_customs.db (the working copy is never touched)",
+  "tools_listed_by_server": [
+    "check_restock",
+    "pay_bill",
+    "request_restock_purchase",
+    "list_purchase_orders",
+    "quote_bulk_price",
+    "get_shop_date",
+    "list_tickets",
+    "get_ticket",
+    "update_ticket",
+    "get_inventory",
+    "get_low_stock",
+    "list_vendors",
+    "get_cash_balance",
+    "list_invoices",
+    "list_payments",
+    "list_payment_approvals",
+    "list_leases",
+    "draft_customer_message",
+    "list_message_drafts"
+  ],
+  "all_tests_passed": true,
+  "tests": [
+    {
+      "ticket": 101,
+      "prompt": "Ticket 101: Tauhid Zaman needs 1 Classic Bulldog Tee (CC-TEE-WHITE) in size S. Can we fill it from stock, and if not, which vendors could restock it, what would it cost, and when could it arrive?",
+      "tool_name": "check_restock",
+      "tool_input": {
+        "sku": "CC-TEE-WHITE",
+        "size": "S",
+        "qty": 1
+      },
+      "tool_output": {
+        "ok": true,
+        "shop_date": "2026-08-31",
+        "sku": "CC-TEE-WHITE",
+        "name": "Classic Bulldog Tee",
+        "size": "S",
+        "location": "Aisle B",
+        "requested": 1,
+        "on_hand": 0,
+        "can_fill_now": false,
+        "shortfall": 1,
+        "unit_cost": 8.0,
+        "restock_cost": 8.0,
+        "vendors": [
+          {
+            "id": 1,
+            "name": "Bulldog Print Co",
+            "specialty": "apparel reprint",
+            "lead_days": 5,
+            "can_ship": false,
+            "blocking_invoices": [
+              {
+                "id": 501,
+                "amount": 840.0,
+                "due_date": "2026-08-28",
+                "description": "Rush reprint CC-TEE-WHITE S",
+                "days_overdue": 3
+              }
+            ],
+            "earliest_arrival": "2026-09-05"
+          },
+          {
+            "id": 2,
+            "name": "Elm City Gifts",
+            "specialty": "mugs and small goods",
+            "lead_days": 3,
+            "can_ship": true,
+            "blocking_invoices": [],
+            "earliest_arrival": "2026-09-03"
+          },
+          {
+            "id": 3,
+            "name": "QuickShip CT",
+            "specialty": "local courier",
+            "lead_days": 1,
+            "can_ship": true,
+            "blocking_invoices": [],
+            "earliest_arrival": "2026-09-01"
+          }
+        ]
+      },
+      "database_check": {
+        "shop_date": {
+          "database": "2026-08-31",
+          "tool": "2026-08-31",
+          "match": true
+        },
+        "on_hand": {
+          "database": 0,
+          "tool": 0,
+          "match": true
+        },
+        "shortfall": {
+          "database": 1,
+          "tool": 1,
+          "match": true
+        },
+        "unit_cost": {
+          "database": 8.0,
+          "tool": 8.0,
+          "match": true
+        },
+        "vendor_1_lead_days": {
+          "database": 5,
+          "tool": 5,
+          "match": true
+        },
+        "vendor_1_earliest_arrival": {
+          "database": "2026-09-05",
+          "tool": "2026-09-05",
+          "match": true
+        },
+        "vendor_1_can_ship": {
+          "database": false,
+          "tool": false,
+          "match": true
+        },
+        "vendor_1_blocking_invoice_amount": {
+          "database": 840.0,
+          "tool": 840.0,
+          "match": true
+        }
+      },
+      "all_values_match_database": true
+    },
+    {
+      "ticket": 102,
+      "prompt": "Ticket 102: Elm City Properties says rent for lease 1 is due. Pay the Chapel Street rent from checking.",
+      "tool_name": "pay_bill",
+      "tool_input": {
+        "kind": "rent",
+        "ref_id": 1,
+        "requested_by": "smoke_test"
+      },
+      "tool_output": {
+        "ok": true,
+        "paid": false,
+        "status": "pending_approval",
+        "approval_id": 1,
+        "amount": 2400.0,
+        "description": "Rent for Chapel Street shop due 2026-09-02",
+        "balance_after_if_paid": 1000.0,
+        "next_step": "A human must approve this payment before it can be paid."
+      },
+      "database_check": {
+        "amount": {
+          "database": 2400.0,
+          "tool": 2400.0,
+          "match": true
+        },
+        "balance_after_if_paid": {
+          "database": 1000.0,
+          "tool": 1000.0,
+          "match": true
+        },
+        "paid": {
+          "database": false,
+          "tool": false,
+          "match": true
+        },
+        "status": {
+          "database": "pending_approval",
+          "tool": "pending_approval",
+          "match": true
+        }
+      },
+      "all_values_match_database": true
+    },
+    {
+      "ticket": 103,
+      "prompt": "Ticket 103: Yale AI Club wants 20 Navy Hoodies (CC-HOOD-NAVY) in size M at a bulk discount. Price the order at 10% off and tell me whether it still covers cost and how many we have on hand.",
+      "tool_name": "quote_bulk_price",
+      "tool_input": {
+        "sku": "CC-HOOD-NAVY",
+        "size": "M",
+        "qty": 20,
+        "discount_pct": 10
+      },
+      "note": "10% is a test input to exercise the tool; ticket 103 does not name a discount.",
+      "tool_output": {
+        "ok": true,
+        "sku": "CC-HOOD-NAVY",
+        "size": "M",
+        "qty": 20,
+        "list_price": 58.0,
+        "unit_cost": 22.0,
+        "discount_pct": 10.0,
+        "unit_price": 52.2,
+        "order_total": 1044.0,
+        "margin_per_unit": 30.2,
+        "order_margin": 604.0,
+        "max_discount_pct_at_cost": 62.07,
+        "on_hand": 8,
+        "shortfall": 12
+      },
+      "database_check": {
+        "list_price": {
+          "database": 58.0,
+          "tool": 58.0,
+          "match": true
+        },
+        "unit_cost": {
+          "database": 22.0,
+          "tool": 22.0,
+          "match": true
+        },
+        "unit_price": {
+          "database": 52.2,
+          "tool": 52.2,
+          "match": true
+        },
+        "order_total": {
+          "database": 1044.0,
+          "tool": 1044.0,
+          "match": true
+        },
+        "on_hand": {
+          "database": 8,
+          "tool": 8,
+          "match": true
+        },
+        "shortfall": {
+          "database": 12,
+          "tool": 12,
+          "match": true
+        }
+      },
+      "all_values_match_database": true
+    }
+  ]
+}

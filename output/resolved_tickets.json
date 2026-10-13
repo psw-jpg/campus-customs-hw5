@@ -1,0 +1,477 @@
+{
+  "generated_from": "output/audit_trail.json (runs after the reset at 2026-10-12T17:22:14.272) and data/campus_customs_new.db",
+  "starting_checking_balance": 3400.0,
+  "ending_checking_balance": 152.0,
+  "tickets": [
+    {
+      "id": 101,
+      "type": "customer_order",
+      "requester": "Tauhid Zaman",
+      "board_state": "resolved",
+      "final_status": "blocked",
+      "short_outcome": "The $840.00 overdue invoice 501 was paid to unblock Bulldog Print Co, and a 1-unit tee restock (PO 1, $8.00) was purchased, arriving 2026-09-05. Tauhid has a draft update. The ticket stays blocked only until that tee arrives, because the shop date is still 2026-08-31.",
+      "runs": [
+        {
+          "run_id": "run_20261012_172225_465be3",
+          "boss_status": "waiting_approval",
+          "model_requests": 14,
+          "tokens": 49446
+        },
+        {
+          "run_id": "run_20261012_172546_3f9540",
+          "boss_status": "blocked",
+          "model_requests": 12,
+          "tokens": 42520
+        }
+      ],
+      "agent_contributions": {
+        "boss": {
+          "character": "Mr. Krabs",
+          "role": "Boss",
+          "runs": [
+            {
+              "run_id": "run_20261012_172225_465be3",
+              "summary": "Ticket 101: CC-TEE-WHITE (Classic Bulldog Tee), size S, 1 requested; 0 on hand at Aisle B, short 1. Bulldog Print Co (vendor 1) is blocked by open invoice 501 for $840.00, due 2026-08-28 and 3 days overdue as of 2026-08-31. Invoice payment request approval 1 is pending; exact 1-unit restock PO 1 for $8.00 has purchase approval 2 pending. Earliest possible arrival is 2026-09-05, conditional on invoice 501 being paid. Draft 1 saved for Tauhid Zaman, not sent.",
+              "tools": [
+                "get_shop_date",
+                "get_ticket",
+                "update_ticket"
+              ],
+              "delegated_to": [
+                "accounting",
+                "customer_service",
+                "inventory"
+              ]
+            },
+            {
+              "run_id": "run_20261012_172546_3f9540",
+              "summary": "Ticket 101: CC-TEE-WHITE size S has 0 on hand; 1 unit is short. Invoice 501 for $840 is paid, unblocking Bulldog Print Co (vendor 1). Restock PO 1 for 1 unit at $8 is ordered with expected arrival 2026-09-05. Updated customer draft 4 was saved; pickup is pending delivery.",
+              "tools": [
+                "get_shop_date",
+                "get_ticket",
+                "list_message_drafts",
+                "update_ticket"
+              ],
+              "delegated_to": [
+                "accounting",
+                "customer_service",
+                "inventory"
+              ]
+            }
+          ]
+        },
+        "inventory": {
+          "character": "SpongeBob",
+          "role": "Inventory",
+          "runs": [
+            {
+              "run_id": "run_20261012_172225_465be3",
+              "summary": "CC-TEE-WHITE size S (Classic Bulldog Tee, Aisle B) cannot be filled now: 0 on hand, 1 requested, 1 short. The correct supplier is Bulldog Print Co (vendor 1, apparel reprint); restocking 1 costs $8.00 ($8.00 unit cost), with 5 lead days and earliest arrival 2026-09-05 only after its blocking invoice is paid. Invoice 501 is open for $840.00, due 2026-08-28 and 3 days overdue; other tee sizes are M 5, L 3, and XL 2 on hand.",
+              "tools": [
+                "check_restock",
+                "get_inventory",
+                "get_shop_date",
+                "list_purchase_orders"
+              ],
+              "delegated_to": []
+            },
+            {
+              "run_id": "run_20261012_172546_3f9540",
+              "summary": "Ticket 101: CC-TEE-WHITE size S (Classic Bulldog Tee, Aisle B) has 0 on hand against 1 requested, so 1 is short and it cannot be filled now. The supplying vendor is Bulldog Print Co (vendor 1): restocking 1 costs $8.00, with 5 lead days and earliest arrival 2026-09-05 from shop date 2026-08-31; vendor 1 is not currently blocked, as the live check returned can_ship=true and no blocking invoices, including no open blocker from linked invoice 501. No order was placed.",
+              "tools": [
+                "check_restock"
+              ],
+              "delegated_to": []
+            }
+          ]
+        },
+        "accounting": {
+          "character": "Squidward",
+          "role": "Accounting",
+          "runs": [
+            {
+              "run_id": "run_20261012_172225_465be3",
+              "summary": "Filed the exact 1-unit restock request for ticket 101 with Bulldog Print Co; PO 1 is pending human approval (approval_id 2), total $8.00. It cannot be paid or shipped until invoice 501 ($840.00) is paid; invoice payment approval_id 1 is still pending. The purchase would leave checking at $3,392.00 if paid, but it is not paid yet.",
+              "tools": [
+                "get_cash_balance",
+                "get_shop_date",
+                "list_invoices",
+                "list_payment_approvals",
+                "pay_bill",
+                "request_restock_purchase"
+              ],
+              "delegated_to": []
+            },
+            {
+              "run_id": "run_20261012_172546_3f9540",
+              "summary": "Invoice 501 is paid: approval 1 is marked paid, and payment 1 shows $840.00 paid from checking on 2026-08-31, approved by Paul. Restock PO 1 is ordered (not pending or rejected); approval 2 is paid, and the PO lists expected arrival 2026-09-05. Checking balance is $152.00 as of 2026-08-31; no duplicate request was filed.",
+              "tools": [
+                "get_cash_balance",
+                "list_invoices",
+                "list_payment_approvals",
+                "list_payments",
+                "list_purchase_orders"
+              ],
+              "delegated_to": []
+            }
+          ]
+        },
+        "customer_service": {
+          "character": "Patrick",
+          "role": "Customer Service",
+          "runs": [
+            {
+              "run_id": "run_20261012_172225_465be3",
+              "summary": "Saved draft 1 for Tauhid Zaman with the out-of-stock status and the earliest possible arrival of September 5, 2026, clearly conditional on restock release. The draft was not sent.",
+              "tools": [
+                "draft_customer_message"
+              ],
+              "delegated_to": []
+            },
+            {
+              "run_id": "run_20261012_172546_3f9540",
+              "summary": "Saved updated draft 4 for Tauhid Zaman, subject \u201cYour Classic Bulldog Tee (size S) order.\u201d It says the one-unit restock is expected September 5, 2026, clarifies this is not a pickup-ready confirmation, and promises an update when the tee arrives and is ready.",
+              "tools": [
+                "draft_customer_message",
+                "get_ticket",
+                "list_message_drafts"
+              ],
+              "delegated_to": []
+            }
+          ]
+        }
+      },
+      "human_approvals": [
+        {
+          "approval_id": 1,
+          "kind": "invoice",
+          "amount": 840.0,
+          "what": "Invoice 501: Rush reprint CC-TEE-WHITE S",
+          "requested_by": "accounting",
+          "approved_by": "Paul",
+          "approved_at": "2026-10-12T17:22:59",
+          "payment_id": 1,
+          "checking_after": 2560.0
+        },
+        {
+          "approval_id": 2,
+          "kind": "purchase",
+          "amount": 8.0,
+          "what": "Restock 1 x CC-TEE-WHITE size S from Bulldog Print Co (PO 1)",
+          "requested_by": "accounting",
+          "approved_by": "Paul",
+          "approved_at": "2026-10-12T17:23:03",
+          "payment_id": 2,
+          "checking_after": 2552.0
+        }
+      ],
+      "customer_drafts": [
+        {
+          "draft_id": 1,
+          "recipient": "Tauhid Zaman",
+          "subject": "Your Classic Bulldog Tee (size S) order",
+          "status": "draft"
+        },
+        {
+          "draft_id": 4,
+          "recipient": "Tauhid Zaman",
+          "subject": "Your Classic Bulldog Tee (size S) order",
+          "status": "draft"
+        }
+      ],
+      "purchase_orders": [
+        {
+          "po_id": 1,
+          "item": "1 x CC-TEE-WHITE size S",
+          "total": 8.0,
+          "status": "ordered",
+          "expected_arrival": "2026-09-05"
+        }
+      ],
+      "boss_reasoning": "The $840 invoice 501 is paid and the exact one-unit $8 restock PO 1 is ordered, so no payment approval remains pending. However, inventory still reports 0 units on hand and the customer cannot receive the tee until the ordered unit arrives; 2026-09-05 is an expected arrival, not confirmation that it is ready for pickup. Ticket remains blocked pending delivery."
+    },
+    {
+      "id": 102,
+      "type": "rent_notice",
+      "requester": "Elm City Properties",
+      "board_state": "resolved",
+      "final_status": "resolved",
+      "short_outcome": "The rent notice was verified against lease 1, and the $2,400.00 Chapel Street rent was paid after human approval. next_due moved to 2026-10-02, and the landlord has a draft confirmation.",
+      "runs": [
+        {
+          "run_id": "run_20261012_172317_16c3ba",
+          "boss_status": "waiting_approval",
+          "model_requests": 26,
+          "tokens": 73276
+        },
+        {
+          "run_id": "run_20261012_172634_81ebd6",
+          "boss_status": "resolved",
+          "model_requests": 12,
+          "tokens": 38439
+        }
+      ],
+      "agent_contributions": {
+        "boss": {
+          "character": "Mr. Krabs",
+          "role": "Boss",
+          "runs": [
+            {
+              "run_id": "run_20261012_172317_16c3ba",
+              "summary": "Ticket 102: Lease 1 covers the Chapel Street shop, leased from Elm City Properties. Monthly rent is $2,400.00, due 2026-09-02 (2 days after shop date 2026-08-31). Checking had $2,552.00 and no pending payment requests before filing; rent request approval 3 for $2,400.00 is pending human approval, not paid. If paid, checking would have $152.00. Customer Service saved draft 2; it was not sent.",
+              "tools": [
+                "get_shop_date",
+                "get_ticket",
+                "update_ticket"
+              ],
+              "delegated_to": [
+                "accounting",
+                "customer_service",
+                "facilities"
+              ]
+            },
+            {
+              "run_id": "run_20261012_172634_81ebd6",
+              "summary": "Ticket 102 rent notice for lease 1 (Chapel Street shop; landlord Elm City Properties): rent is $2,400.00. Payment approval 3 is confirmed paid. Facilities confirms lease next_due is 2026-10-02, 32 days from 2026-08-31. Customer Service saved updated draft 5; not sent.",
+              "tools": [
+                "get_shop_date",
+                "get_ticket",
+                "list_message_drafts",
+                "list_payment_approvals",
+                "update_ticket"
+              ],
+              "delegated_to": [
+                "accounting",
+                "customer_service",
+                "facilities"
+              ]
+            }
+          ]
+        },
+        "facilities": {
+          "character": "Sandy",
+          "role": "Facilities",
+          "runs": [
+            {
+              "run_id": "run_20261012_172317_16c3ba",
+              "summary": "Lease 1 is the Chapel Street shop, landlord Elm City Properties: monthly rent is $2,400.00, due 2026-09-02, in 2 days according to the shop date. No separate amount or timing claim was provided to compare; no rent request is pending, so Accounting would need to file one, subject to human approval. Missing the hard due date puts the shop at risk.",
+              "tools": [
+                "get_shop_date",
+                "list_leases"
+              ],
+              "delegated_to": [
+                "accounting"
+              ]
+            },
+            {
+              "run_id": "run_20261012_172634_81ebd6",
+              "summary": "Lease 1 is the Chapel Street shop, with Elm City Properties as landlord. Monthly rent is $2,400.00; next due is 2026-10-02, which is 32 days after today, 2026-08-31. No separate due-date claim was provided to compare; no other actions were taken.",
+              "tools": [
+                "get_shop_date",
+                "list_leases"
+              ],
+              "delegated_to": []
+            }
+          ]
+        },
+        "accounting": {
+          "character": "Squidward",
+          "role": "Accounting",
+          "runs": [
+            {
+              "run_id": "run_20261012_172317_16c3ba",
+              "summary": "For lease 1, rent is not recorded as paid. A $2,400 rent payment request is already pending human approval (approval id 3), so it is being processed but has not been paid; I made no new request.",
+              "tools": [
+                "get_cash_balance",
+                "list_payment_approvals",
+                "list_payments",
+                "pay_bill"
+              ],
+              "delegated_to": [
+                "facilities"
+              ]
+            },
+            {
+              "run_id": "run_20261012_172634_81ebd6",
+              "summary": "Checking balance is $152.00 as of 2026-08-31. Rent payment approval 3 for lease 1 ($2,400.00) is already paid, not pending; the other listed payment approvals (1 and 2) are also paid, so there are no pending payment requests and I filed no duplicate.",
+              "tools": [
+                "get_cash_balance",
+                "list_payment_approvals"
+              ],
+              "delegated_to": []
+            }
+          ]
+        },
+        "customer_service": {
+          "character": "Patrick",
+          "role": "Customer Service",
+          "runs": [
+            {
+              "run_id": "run_20261012_172317_16c3ba",
+              "summary": "Saved draft 2 to Elm City Properties acknowledging the rent notice and the verified September 2, 2026 due date, and stating payment is being processed. It remains a draft and was not sent.",
+              "tools": [
+                "draft_customer_message",
+                "get_ticket"
+              ],
+              "delegated_to": [
+                "accounting",
+                "facilities"
+              ]
+            },
+            {
+              "run_id": "run_20261012_172634_81ebd6",
+              "summary": "Saved draft 5 for Elm City Properties with the subject \u201cChapel Street shop rent payment.\u201d It acknowledges the Chapel Street rent notice and accurately states that the $2,400.00 payment has been paid; the draft was not sent.",
+              "tools": [
+                "draft_customer_message"
+              ],
+              "delegated_to": []
+            }
+          ]
+        }
+      },
+      "human_approvals": [
+        {
+          "approval_id": 3,
+          "kind": "rent",
+          "amount": 2400.0,
+          "what": "Rent for Chapel Street shop due 2026-09-02",
+          "requested_by": "accounting",
+          "approved_by": "Paul",
+          "approved_at": "2026-10-12T17:23:46",
+          "payment_id": 3,
+          "checking_after": 152.0
+        }
+      ],
+      "customer_drafts": [
+        {
+          "draft_id": 2,
+          "recipient": "Elm City Properties",
+          "subject": "Chapel Street shop rent due September 2",
+          "status": "draft"
+        },
+        {
+          "draft_id": 5,
+          "recipient": "Elm City Properties",
+          "subject": "Chapel Street shop rent payment",
+          "status": "draft"
+        }
+      ],
+      "purchase_orders": [],
+      "boss_reasoning": "The linked lease's $2,400.00 rent payment request (approval 3, lease 1) is confirmed paid, so no human approval remains. Facilities reports the lease's next due date as 2026-10-02 (32 days after shop date 2026-08-31). The landlord has an updated, unsent draft confirming payment."
+    },
+    {
+      "id": 103,
+      "type": "price_override",
+      "requester": "Yale AI Club",
+      "board_state": "resolved",
+      "final_status": "blocked",
+      "short_outcome": "Mr. Krabs approved 20% off ($46.40 a hoodie, $24.40 above the $22.00 cost) and offered the 8 size M hoodies in stock ($371.20). The other 12 need a $264.00 restock the shop can't afford with $152.00 in checking ($112.00 short), so no purchase was filed and the ticket is blocked.",
+      "runs": [
+        {
+          "run_id": "run_20261012_172414_c3263e",
+          "boss_status": "blocked",
+          "model_requests": 22,
+          "tokens": 79488
+        }
+      ],
+      "agent_contributions": {
+        "boss": {
+          "character": "Mr. Krabs",
+          "role": "Boss",
+          "runs": [
+            {
+              "run_id": "run_20261012_172414_c3263e",
+              "summary": "Ticket 103 for Yale AI Club: CC-HOOD-NAVY size M has 8 of 20 requested on hand in Aisle A; 12 are short. Bulldog Print Co (vendor 1) is unblocked; restocking 12 costs $264 ($22 each) with earliest arrival 2026-09-05 from 2026-08-31, but no purchase was filed. Checking is $152, $112 short of restock alone; lease 1 rent is $2,400 due 2026-10-02 (32 days away). Accounting quoted the chosen 20% discount at $46.40/unit, $24.40 above $22 unit cost; 8 units total $371.20. Customer Service saved draft 3 offering only 8 available units. Ticket updated to blocked.",
+              "tools": [
+                "get_shop_date",
+                "get_ticket",
+                "update_ticket"
+              ],
+              "delegated_to": [
+                "accounting",
+                "customer_service",
+                "facilities",
+                "inventory"
+              ]
+            }
+          ]
+        },
+        "inventory": {
+          "character": "SpongeBob",
+          "role": "Inventory",
+          "runs": [
+            {
+              "run_id": "run_20261012_172414_c3263e",
+              "summary": "CC-HOOD-NAVY size M (Basic Hoodie Big Yale, Aisle A) has 8 on hand against 20 requested, so 12 are short and it cannot be filled now. Restock the 12-unit shortfall from Bulldog Print Co (vendor 1, apparel reprint) at $22.00 each, totaling $264.00; lead time is 5 days from 2026-08-31, with earliest arrival 2026-09-05. Bulldog Print Co can ship and has no open blocking invoices.",
+              "tools": [
+                "check_restock"
+              ],
+              "delegated_to": []
+            }
+          ]
+        },
+        "accounting": {
+          "character": "Squidward",
+          "role": "Accounting",
+          "runs": [
+            {
+              "run_id": "run_20261012_172414_c3263e",
+              "summary": "At the proposed 20% discount, CC-HOOD-NAVY size M prices at $46.40 each against the $22.00 unit cost, for $24.40 margin per unit. Qty 8 totals $371.20 with $195.20 total margin; qty 20 totals $928.00 with $488.00 total margin. The full request has 8 on hand and a 12-unit shortfall; no purchase was filed, consistent with the reported $152 checking balance and unaffordable $264 restock.",
+              "tools": [
+                "get_cash_balance",
+                "get_shop_date",
+                "list_invoices",
+                "list_payment_approvals",
+                "list_purchase_orders",
+                "quote_bulk_price"
+              ],
+              "delegated_to": [
+                "facilities"
+              ]
+            }
+          ]
+        },
+        "facilities": {
+          "character": "Sandy",
+          "role": "Facilities",
+          "runs": [
+            {
+              "run_id": "run_20261012_172414_c3263e",
+              "summary": "Lease 1 is the Chapel Street shop, with Elm City Properties as landlord. Monthly rent is $2,400.00; next_due is 2026-10-02, which is 32 days after the specified shop date, 2026-08-31. This verifies the rent obligation for the cash assessment; no rent-request status was checked.",
+              "tools": [
+                "get_shop_date",
+                "list_leases"
+              ],
+              "delegated_to": []
+            }
+          ]
+        },
+        "customer_service": {
+          "character": "Patrick",
+          "role": "Customer Service",
+          "runs": [
+            {
+              "run_id": "run_20261012_172414_c3263e",
+              "summary": "Saved draft 3 for Yale AI Club with the proposed partial offer: 8 size M hoodies at $46.40 each ($371.20 total), noting the 12 remaining are out of stock with no promised restock date and asking whether they want the 8 available units.",
+              "tools": [
+                "draft_customer_message"
+              ],
+              "delegated_to": []
+            }
+          ]
+        }
+      },
+      "human_approvals": [],
+      "customer_drafts": [
+        {
+          "draft_id": 3,
+          "recipient": "Yale AI Club",
+          "subject": "Partial offer: Basic Hoodie Big Yale (size M)",
+          "status": "draft"
+        }
+      ],
+      "purchase_orders": [],
+      "boss_reasoning": "The requested 20 cannot be supplied now: 8 are on hand and 12 require a $264 restock. Current checking is $152, so even the restock alone is unaffordable by $112, and the $2,400 lease 1 rent due 2026-10-02 is a higher-priority obligation. No purchase order was filed and no arrival is promised. The selected 20% discount was quoted at $46.40 per unit, $24.40 above the $22 unit cost; the draft offers only the 8 units actually on hand."
+    }
+  ]
+}
